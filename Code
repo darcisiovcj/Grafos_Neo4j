@@ -1,0 +1,53 @@
+CREATE (GOT:Book {title:'Game of Thrones', published: 1996})
+
+CREATE (ES:Person {name:'Eddard Stark', titles: 'Lord of Winterfell, Warden of the North, Hang of the King, Protector of the Realm, Lord Regent', born: '263 AC'})
+CREATE (TL:Person {name:'Tywin Lannister’', titles: 'Lord of Casterly Rock, Shield of Lannisport and Warden of the West’', born: '242 AC'})
+CREATE (DT:Person {name:'Daenerys Targaryen’', titles: 'Daenerys Stormborn of the House Targaryen, First of Her Name, the Unburnt, Queen of the Andals and the First Men, Khaleesi of the Great Grass Sea, Breaker of Chain, and Mother of Dragons', born: '172 AC'})
+
+MATCH (ES:Person), (GOT: Book) CREATE (ES)-\[:APPEARS_IN\]-&gt;(GOT)
+
+MATCH (n) RETURN n:
+
+&lt;dependency&gt;
+&lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+&lt;artifactId&gt;spring-data-neo4j&lt;/artifactId&gt;
+&lt;version&gt;5.0.2.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+
+@NodeEntity
+public class Book {
+@Id
+@GeneratedValue
+private Long id;
+private String published;
+private String title;
+@Relationship(type="APPEARS_IN", direction = Relationship.INCOMING )
+private Set characters;
+public Long getId() {
+return id;
+}
+public String getPublished() {
+return published;
+}
+public String getTitle() {
+return title;
+}
+public Set getCharacters() {
+return characters;
+}
+public void setId(Long id) {
+this.id = id;
+}
+public void setPublished(String published) {
+this.published = published;
+}
+public void setTitle(String title) {
+this.title = title;
+}
+public void setCharacters(Set characters) {
+this.characters = characters;
+}
+}
+
+public interface BookRepository extends Neo4jRepository  {
+}
